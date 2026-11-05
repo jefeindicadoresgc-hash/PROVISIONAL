@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Retención | Hyundai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- INTRO POKÉMON (LOGIN) -->
+    <div id="login-screen" class="screen active retro-bg">
+        <div id="rain-container"></div>
+        <div class="pokedex-container glass-pokedex">
+            <div class="screen-header">
+                <div class="blue-light"></div>
+                <div class="small-lights">
+                    <div class="red-light"></div><div class="yellow-light"></div><div class="green-light"></div>
+                </div>
+            </div>
+            
+            <div class="pokedex-screen">
+                <div class="title-container">
+                    <h2 class="typewriter-title">POKE CITAS</h2>
+                    <h3 class="typewriter-subtitle">HYUNDAI COATZA</h3>
+                </div>
+                
+                <div id="captcha-section" class="captcha-box">
+                    <div id="power-on-screen">
+                        <button id="btn-power-on" class="poke-btn">ENCENDER POKÉDEX</button>
+                    </div>
+                    <div id="game-screen" class="hidden">
+                        <p class="captcha-title">¿QUIÉN ES ESTE POKÉMON?</p>
+                        <img id="captcha-img" src="" class="silhouette" alt="Misterio">
+                        <p id="captcha-hint" class="hint-text">Cargando pista...</p>
+                        <div id="captcha-buttons" class="btn-grid"></div>
+                    </div>
+                </div>
+
+                <div id="password-section" class="hidden">
+                    <p style="font-size: 10px; color: #008000; margin-bottom: 10px;">¡Desbloqueado!</p>
+                    <div class="input-group">
+                        <input type="password" id="password" placeholder="CÓDIGO (ENTER)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CRM -->
+    <div id="main-screen" class="screen hidden modern-bg">
+        <nav class="glass-navbar">
+            <div class="nav-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/2048px-Hyundai_Motor_Company_logo.svg.png" alt="Hyundai Logo" width="120">
+                <span class="nav-title">| CRM Retención 360°</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <input type="month" id="mes-filtro" class="table-input" value="2026-09" style="width: auto; font-weight: bold; background: rgba(255,255,255,0.9);">
+                <button id="btn-clear-data" class="btn-corp-danger">Borrar Memoria</button>
+                <button id="btn-logout" class="btn-corp-outline">Salir</button>
+            </div>
+        </nav>
+
+        <main class="dashboard-container">
+            <div class="tabs-container glass-card">
+                <button class="tab-btn active" data-target="activos">Base Activos</button>
+                <button class="tab-btn" data-target="inactivos">Base Inactivos</button>
+                <button class="tab-btn" data-target="primer">Primer Servicio</button>
+                <button class="tab-btn" data-target="papelera" style="margin-left: auto; background: #ffebee; color: #c62828;">Papelera 🗑️</button>
+            </div>
+
+            <!-- Panel de Carga -->
+            <div class="glass-card upload-section" id="upload-panel">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+                    <div>
+                        <h3 style="font-size: 12px;">1. Cargar Base (<span id="current-tab-name">Activos</span>)</h3>
+                        <div class="file-upload-wrapper" style="margin-top: 10px;">
+                            <input type="file" id="excel-upload" accept=".xls,.xlsx" style="width: 100%;">
+                            <button id="btn-process-excel" class="btn-corp-primary" style="width: 100%; margin-top: 5px;">Subir Base</button>
+                        </div>
+                    </div>
+                    <div id="panel-enriquecer" style="border-left: 2px dashed #ccc; padding-left: 15px;">
+                        <h3 style="font-size: 12px; color: #28a745;">2. Enriquecer (VIN, Tel)</h3>
+                        <div class="file-upload-wrapper" style="margin-top: 10px;">
+                            <input type="file" id="excel-detalles" accept=".xls,.xlsx" style="width: 100%;">
+                            <button id="btn-process-detalles" class="btn-corp-primary" style="background:#28a745; width: 100%; margin-top: 5px;">Actualizar Datos</button>
+                        </div>
+                    </div>
+                    <div id="panel-vincular" style="border-left: 2px dashed #ccc; padding-left: 15px;">
+                        <h3 style="font-size: 12px; color: #d32f2f;">3. Filtrar Servicios</h3>
+                        <div class="file-upload-wrapper" style="margin-top: 10px;">
+                            <input type="file" id="excel-asesores" accept=".xls,.xlsx" multiple style="width: 100%;">
+                            <button id="btn-process-asesores" class="btn-corp-danger" style="width: 100%; margin-top: 5px;">Filtrar Asesores</button>
+                        </div>
+                    </div>
+                    <div id="panel-proactivos" style="border-left: 2px dashed #ccc; padding-left: 15px;">
+                        <h3 style="font-size: 12px; color: #6f42c1;">4. Detectar Proactivos</h3>
+                        <div class="file-upload-wrapper" style="margin-top: 10px;">
+                            <input type="file" id="excel-proactivos" accept=".xls,.xlsx" style="width: 100%;">
+                            <button id="btn-process-proactivos" class="btn-corp-primary" style="background:#6f42c1; width: 100%; margin-top: 5px;">Revisar por VIN</button>
+                        </div>
+                    </div>
+                </div>
+                <p id="upload-status" class="status-msg" style="margin-top: 15px; text-align: center;"></p>
+            </div>
+
+            <!-- Tabla y Métricas -->
+            <div class="glass-card table-section">
+                <!-- TARJETAS DE MÉTRICAS -->
+                <div id="stats-panel" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div class="stat-card"><strong>👥 Total del Mes:</strong> <span id="stat-total">0</span></div>
+                    <div class="stat-card"><strong>✅ Proactivos:</strong> <span id="stat-proact" style="color: #28a745;">0</span></div>
+                    <div class="stat-card"><strong>📞 Falta Contactar:</strong> <span id="stat-contact" style="color: #d32f2f;">0</span></div>
+                    <div class="stat-card"><strong>📅 Falta Cita:</strong> <span id="stat-cita" style="color: #ff9800;">0</span></div>
+                </div>
+
+                <div class="table-header">
+                    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                        <h3 id="table-title" style="margin:0;">Directorio de Clientes</h3>
+                        
+                        <!-- Filtros de Vista -->
+                        <div id="view-filters" style="display:flex; gap: 8px;">
+                            <button id="filter-all" class="badge" style="background: var(--hyundai-blue); cursor:pointer; border:none; padding: 6px 15px;">Ver Todos</button>
+                            <button id="filter-pendientes" class="badge" style="background: #6c757d; cursor:pointer; border:none; padding: 6px 15px;">Pendientes (Sin Proactivos)</button>
+                            <button id="filter-proactivos" class="badge" style="background: #6c757d; cursor:pointer; border:none; padding: 6px 15px;">Ver Proactivos</button>
+                        </div>
+
+                        <!-- Filtros Internos de Papelera (Ocultos por defecto) -->
+                        <div id="papelera-filters" class="hidden" style="display:flex; gap: 8px; align-items: center;">
+                            <span style="font-size: 12px; font-weight: bold; color: #dc3545;">División:</span>
+                            <button class="badge btn-pap-sub" data-sub="activos" style="background: var(--hyundai-blue); cursor:pointer; border:none; padding: 6px 15px;">Activos</button>
+                            <button class="badge btn-pap-sub" data-sub="inactivos" style="background: #6c757d; cursor:pointer; border:none; padding: 6px 15px;">Inactivos</button>
+                            <button class="badge btn-pap-sub" data-sub="primer" style="background: #6c757d; cursor:pointer; border:none; padding: 6px 15px;">Primer Servicio</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="corp-table">
+                        <thead>
+                            <tr>
+                                <th>ORDEN</th>
+                                <th>VIN</th>
+                                <th>CLIENTE</th>
+                                <th>TELÉFONO</th>
+                                <th>ÚLTIMO SERVICIO</th>
+                                <th class="highlight-col">PRÓXIMO (6M)</th>
+                                <th>ESTATUS</th>
+                                <th style="text-align: center;">ACCIÓN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALES -->
+    <div id="client-modal" class="modal hidden">
+        <div class="glass-modal-content" style="max-width: 800px; position: relative;">
+            <button id="btn-close-x" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 28px; cursor: pointer; color: #666;">&times;</button>
+            <h2 style="color: var(--hyundai-blue); border-bottom: 2px solid #eee; padding-bottom: 10px;">Gestión de Cliente</h2>
+            <h3 id="modal-client-name" style="margin: 15px 0 10px 0; font-size: 20px;"></h3>
+            
+            <div id="modal-car-info" style="font-size: 13px; color: #333; background: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div><strong>Auto:</strong> <span id="modal-auto"></span></div>
+                <div><strong>Año:</strong> <span id="modal-anio"></span></div>
+                <div><strong>VIN:</strong> <span id="modal-vin"></span></div>
+                <div><strong>KMs:</strong> <span id="modal-km"></span></div>
+                <div style="grid-column: span 2; font-size: 15px; color: var(--hyundai-blue);"><strong>Teléfono:</strong> <span id="modal-tel" style="font-weight: bold;"></span></div>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group"><label>¿Fue Contactado?</label><select id="modal-contactado" class="table-select"><option value="-">-</option><option value="SI">SI</option><option value="NO">NO</option></select></div>
+                <div class="form-group hidden" id="group-medio"><label>Medio</label><select id="modal-medio" class="table-select"><option value="-">Seleccionar...</option><option value="WhatsApp">WhatsApp</option><option value="Llamada">Llamada</option><option value="Correo">Correo</option><option value="Presencial">Presencial</option></select></div>
+                <div class="form-group hidden" id="group-motivo"><label>Motivo</label><select id="modal-motivo" class="table-select"><option value="-">Seleccionar...</option><option value="Buzón / No contesta">Buzón / No contesta</option><option value="Número Equivocado">Número Equivocado</option><option value="No le interesa">No le interesa</option></select></div>
+                <div class="form-group"><label>¿Agendó Cita?</label><select id="modal-agendo" class="table-select"><option value="-">-</option><option value="SI">SI</option><option value="NO">NO</option></select></div>
+            </div>
+            <div class="form-group" style="margin-top: 15px;"><label>Comentarios</label><textarea id="modal-comentarios" class="table-input" rows="3"></textarea></div>
+            
+            <div style="margin-top: 20px;">
+                <strong>Historial de Llamadas:</strong>
+                <div id="modal-history" style="font-size: 12px; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 5px;"></div>
+                <button id="btn-register-call" class="btn-call" style="margin-top: 10px;">📞 Registrar Intento Hoy</button>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+                <button id="btn-close-modal" class="btn-corp-outline" style="color: #333; border-color: #ccc; padding: 10px 20px;">Cancelar</button>
+                <button id="btn-save-modal" class="btn-corp-primary" style="padding: 10px 30px;">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4.2 Modal Auditoría Eliminación -->
+    <div id="report-modal" class="modal hidden">
+        <div class="glass-modal-content" style="max-width: 850px; width: 100%;">
+            <h2 style="color: red; border-bottom: 2px solid #eee; padding-bottom: 10px;">⚠️ Auditoría de Eliminación</h2>
+            <p style="font-size: 14px; margin: 10px 0;">Estos clientes no tienen un servicio de mantenimiento. Selecciona los que <strong>SÍ deseas eliminar</strong> (Se irán a la Papelera).</p>
+            <div id="report-list" style="max-height: 400px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 13px; margin-bottom: 15px; border: 1px solid #ddd;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="purge-counter" style="font-size: 13px; font-weight: bold; color: #dc3545;">0 seleccionados</span>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btn-cancel-report" class="btn-corp-outline" style="color: #333; border-color: #ccc;">Cancelar Todo</button>
+                    <button id="btn-confirm-purge" class="btn-corp-danger">Confirmar Acción</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4.3 Modal Auditoría Carga -->
+    <div id="base-report-modal" class="modal hidden">
+        <div class="glass-modal-content" style="max-width: 600px; width: 100%;">
+            <h2 style="color: #ff9800; border-bottom: 2px solid #eee; padding-bottom: 10px;">⚠️ Auditoría de Carga (Ignorados)</h2>
+            <p style="font-size: 13px; margin: 10px 0;">El sistema bloqueó estas filas (Totales/Vacías). ¿Deseas continuar?</p>
+            <div id="base-report-list" style="max-height: 250px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 15px;"></div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button id="btn-cancel-base" class="btn-corp-outline" style="color: #333; border-color: #ccc;">Abortar</button>
+                <button id="btn-confirm-base" class="btn-corp-primary">Confirmar Carga</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4.4 Validación Proactivo -->
+    <div id="proactivo-modal" class="modal hidden">
+        <div class="glass-modal-content" style="max-width: 550px; text-align: center;">
+            <div style="font-size: 40px; margin-bottom: 10px;">🔮</div>
+            <h2 style="color: #6f42c1; margin-bottom: 10px;">Validación de Cliente Proactivo</h2>
+            <p style="font-size: 14px; margin-bottom: 15px; color: #555;">El sistema detectó a <strong id="proactivo-name" style="color: var(--hyundai-blue);"></strong> con el VIN <strong id="proactivo-vin-text"></strong> en el reporte reciente.</p>
+            <p style="font-size: 14px; font-weight: bold; margin-bottom: 25px;">¿Confirmas que este cliente ya acudió a realizar su servicio?</p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="btn-proactivo-yes" class="btn-corp-primary" style="background: #28a745; width: 100%; font-size: 14px; padding: 12px;">✅ SÍ, confirmar servicio (Se bloqueará edición)</button>
+                <button id="btn-proactivo-no" class="btn-corp-danger" style="width: 100%; font-size: 14px; padding: 12px;">❌ NO, fue falsa alarma (Regresar a Pendiente)</button>
+                <button id="btn-proactivo-cancel" class="btn-corp-outline" style="color: #333; border-color: #ccc; width: 100%; font-size: 14px; padding: 12px;">Me equivoqué, cerrar esta ventana</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

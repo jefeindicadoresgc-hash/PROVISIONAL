@@ -1,0 +1,147 @@
+/* =========================================
+   ETAPA 1: VARIABLES Y RESETEO
+   ========================================= */
+:root {
+    --hyundai-blue: #002c5f;
+    --text-dark: #333;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+.hidden { display: none !important; }
+.screen { width: 100%; min-height: 100vh; }
+.active { display: flex; justify-content: center; align-items: center; }
+
+/* =========================================
+   ETAPA 2: INTRO RETRO Y ANIMACIONES
+   ========================================= */
+.retro-bg { background-color: #2b2b2b; position: relative; overflow: hidden; font-family: 'Press Start 2P', cursive; }
+#rain-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.falling-ball { position: absolute; top: -100px; background-size: cover; background-position: center; opacity: 0.6; animation: fall linear infinite; }
+@keyframes fall { 0% { transform: translateY(-100px) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+
+.glass-pokedex {
+    position: relative; z-index: 10; background-color: #dc0a2d; border: 5px solid #000; border-radius: 20px;
+    padding: 20px; width: 90%; max-width: 450px; box-shadow: inset -5px -5px 0px rgba(0,0,0,0.2), 15px 15px 30px rgba(0,0,0,0.5);
+}
+.screen-header { display: flex; margin-bottom: 20px; border-bottom: 4px solid #8b0015; padding-bottom: 10px; }
+.blue-light { width: 50px; height: 50px; background: radial-gradient(#6bf, #237); border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 10px #6bf, 0 0 0 4px #000; }
+.small-lights { display: flex; gap: 8px; margin-left: 20px; margin-top: 5px; }
+.small-lights div { width: 15px; height: 15px; border-radius: 50%; border: 2px solid #000; }
+.red-light { background-color: #f00; } .yellow-light { background-color: #fe0; } .green-light { background-color: #0f0; }
+
+.pokedex-screen { background-color: #dedede; border: 4px solid #000; border-radius: 10px 10px 10px 40px; padding: 20px; text-align: center; }
+.title-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
+.typewriter-title { font-size: 16px; font-family: 'Press Start 2P'; }
+.typewriter-subtitle { font-size: 10px; color: #555; margin-top: 5px; font-family: 'Press Start 2P'; }
+.input-group input { width: 100%; padding: 12px; background-color: #9bbc0f; border: 3px solid #0f380f; color: #0f380f; font-family: 'Press Start 2P'; font-size: 10px; outline: none; text-align: center; border-radius: 5px; }
+.poke-btn { background-color: #ffde00; color: #3b4cca; border: 4px solid #3b4cca; padding: 12px; width: 100%; font-size: 12px; font-family: 'Press Start 2P'; font-weight: bold; cursor: pointer; margin-top: 10px; border-radius: 8px; box-shadow: 4px 4px 0px #3b4cca; }
+.poke-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #3b4cca; }
+.captcha-box { background-color: #fff; border: 3px solid #000; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+.captcha-title { font-size: 8px; margin-bottom: 10px; font-family: 'Press Start 2P'; }
+.hint-text { font-size: 8px; color: #cc0000; margin: 10px 0; font-family: 'Press Start 2P'; }
+.silhouette { width: 100px; height: 100px; filter: brightness(0); transition: 0.5s; }
+.revealed { filter: none !important; }
+.btn-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.btn-captcha { background-color: #3b4cca; color: white; border: 2px solid #000; padding: 8px; font-size: 8px; font-family: 'Press Start 2P'; cursor: pointer; border-radius: 4px; }
+
+/* =========================================
+   ETAPA 3: DASHBOARD MODERN (GLASSMORPHISM)
+   ========================================= */
+.modern-bg { background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); display: block; }
+.glass-navbar { background: rgba(0, 44, 95, 0.8); backdrop-filter: blur(10px); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+.nav-brand { display: flex; align-items: center; gap: 15px; }
+.nav-title { color: white; font-weight: 600; font-size: 16px; }
+.btn-corp-outline { background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+.btn-corp-outline:hover { background: white; color: var(--hyundai-blue); }
+
+.dashboard-container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+.glass-card { background: rgba(255, 255, 255, 0.7); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); border: 1px solid rgba(255, 255, 255, 0.8); }
+.glass-card h3 { color: var(--hyundai-blue); font-size: 18px; margin-bottom: 10px; font-weight: 700; }
+
+.tabs-container { display: flex; gap: 10px; padding: 15px; }
+.tab-btn { background: white; color: #555; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.tab-btn.active { background: var(--hyundai-blue); color: white; }
+
+.file-upload-wrapper { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.file-upload-wrapper input[type="file"] { background: white; border: 1px solid #ddd; padding: 10px; border-radius: 10px; }
+.btn-corp-primary { background-color: var(--hyundai-blue); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-corp-primary:hover { background-color: #001a3a; }
+.btn-corp-danger { background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-corp-danger:hover { background-color: #c82333; }
+
+.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.badge { background: var(--hyundai-blue); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.table-responsive { width: 100%; overflow-x: auto; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.corp-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+.corp-table th { background-color: #f8f9fa; color: #555; font-weight: 700; padding: 15px; border-bottom: 2px solid #eee; }
+.corp-table td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+.corp-table tr:hover { background-color: #f0f4f8; }
+.highlight-col { color: var(--hyundai-blue) !important; font-weight: bold; background-color: rgba(0,44,95,0.03); }
+
+/* =========================================
+   ETAPA 4: MODALES Y FORMULARIOS
+   ========================================= */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.glass-modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.form-group label { display: block; font-size: 12px; color: #555; font-weight: 600; margin-bottom: 5px; }
+.table-select, .table-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; outline: none; }
+.table-select:focus, .table-input:focus { border-color: var(--hyundai-blue); }
+.btn-action { background: #ffde00; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #000; font-size: 12px; }
+.btn-action:hover { background: #e6c800; }
+.btn-call { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 11px; cursor: pointer; }
+.btn-call:hover { background-color: #218838; }
+.purge-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+.purge-checkbox { width: 18px; height: 18px; cursor: pointer; margin-top: 2px; }
+
+/* Botón de Borrar (Papelera) */
+.btn-delete { background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; margin-left: 5px; }
+.btn-delete:hover { background: #c82333; }
+.btn-restore { background: #17a2b8; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
+
+/* Separación de botones de acción y Etiqueta Proactiva */
+.btn-action { margin-right: 8px; } /* Separa la lupa de la X */
+.btn-delete { background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.btn-delete:hover { background: #c82333; }
+.badge-proactivo { background: #6f42c1 !important; color: white !important; }
+
+/* =========================================
+   NUEVOS BOTONES Y BADGES
+   ========================================= */
+.btn-action { background: var(--hyundai-blue); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; margin-right: 15px; }
+.btn-action:hover { background: #001a3a; box-shadow: 0 2px 5px rgba(0,44,95,0.4); }
+
+.btn-delete { background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.btn-delete:hover { background: #c82333; box-shadow: 0 2px 5px rgba(220,53,69,0.4); }
+
+/* Badge Proactivo Interactivo */
+.badge-proactivo { background: #6f42c1 !important; color: white !important; border: none; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; }
+.badge-proactivo:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(111, 66, 193, 0.5); }
+
+/* =========================================
+   NUEVOS BOTONES Y BADGES
+   ========================================= */
+.btn-action { background: var(--hyundai-blue); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; margin-right: 15px; }
+.btn-action:hover { background: #001a3a; box-shadow: 0 2px 5px rgba(0,44,95,0.4); }
+
+.btn-delete { background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.btn-delete:hover { background: #c82333; box-shadow: 0 2px 5px rgba(220,53,69,0.4); }
+
+/* Badge Proactivo Interactivo */
+.badge-proactivo { background: #6f42c1 !important; color: white !important; border: none; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; }
+.badge-proactivo:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(111, 66, 193, 0.5); }
+
+/* Tarjetas de Métricas */
+.stat-card {
+    background: white; border-radius: 10px; padding: 15px; 
+    border: 1px solid rgba(0, 44, 95, 0.1); box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    display: flex; flex-direction: column; align-items: flex-start;
+}
+.stat-card strong { font-size: 12px; color: #555; margin-bottom: 5px; }
+.stat-card span { font-size: 20px; font-weight: 800; color: var(--hyundai-blue); }
+
+/* Ajuste para que el nombre del cliente se vea completo (Wrap) */
+.client-name-cell {
+    min-width: 180px; max-width: 250px; 
+    white-space: normal; /* Permite el salto de línea */
+    line-height: 1.3; font-size: 12px;
+}
